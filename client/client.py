@@ -22,9 +22,9 @@ def main():
             elif aX > 4:
                 msg = b'R'
             elif aaZ < -200:
-                msg = b'LS'
+                msg = b'L+S'
             elif aaZ > 200:
-                msg = b'RS'
+                msg = b'R+S'
             elif aaX < -150:
                 msg = b'U'
             elif aaX > 150:
