@@ -1,6 +1,6 @@
 import argparse
 import socket
-from gy801 import gy801
+from module.GY801 import GY801
 import time
 
 parser = argparse.ArgumentParser()
@@ -10,34 +10,28 @@ args = parser.parse_args()
 
 def main():
     try:
-        sensors = gy801()
-        adxl345 = sensors.accel
+        sensor = GY801()
         client = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
         client.connect((args.ip, int(args.port)))
 
         while True:
-            adxl345.getX()
-            adxl345.getY()
-            adxl345.getZ()
-
+            aX, aaX, aaZ = sensor.getaX(), sensor.getaaX(), sensor.getaaZ()
             msg = b'No'
-            if adxl345.X < -8:
-                msg = b'L+enter'
-            elif adxl345.X < -3:
+            if aX < -4:
                 msg = b'L'
-            elif adxl345.X > 8:
-                msg = b'R+enter'
-            elif adxl345.X > 3:
+            elif aX > 4:
                 msg = b'R'
-            elif adxl345.Y < -2.5:
-                msg = b'D'
-            elif adxl345.Y > 2.5:
+            elif aaZ < -200:
+                msg = b'LS'
+            elif aaZ > 200:
+                msg = b'RS'
+            elif aaX < -150:
                 msg = b'U'
-                
+            elif aaX > 150:
+                msg = b'D'
             client.send(msg)
             data = client.recv(1024)
-            time.sleep(0.05)
-
+            time.sleep(0.02)
                     
     except KeyboardInterrupt:
         print("Cleanup")

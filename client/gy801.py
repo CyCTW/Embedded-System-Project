@@ -3,7 +3,7 @@ import time
 from math import *
 import numpy as np
 
-bus = smbus.SMBus(1);            # 0 for R-Pi Rev. 1, 1 for Rev. 2
+#bus = smbus.SMBus(1);            # 0 for R-Pi Rev. 1, 1 for Rev. 2
 
 EARTH_GRAVITY_MS2    = 9.80665 # m/s2
 
@@ -21,11 +21,14 @@ ADXL345_MEASURE          = 0x08
 
 class IMU(object):
 
+    def __init__(self):
+        self.bus = smbus.SMBus(1)
+
     def write_byte(self,adr, value):
-        bus.write_byte_data(self.ADDRESS, adr, value)
+        self.bus.write_byte_data(self.ADDRESS, adr, value)
     
     def read_byte(self,adr):
-        return bus.read_byte_data(self.ADDRESS, adr)
+        return self.bus.read_byte_data(self.ADDRESS, adr)
 
     def read_word(self,adr,rf=1):
         # rf=1 Little Endian Format, rf=0 Big Endian Format
@@ -38,10 +41,10 @@ class IMU(object):
         val = (high << 8) + low
         return val
 
-    def read_word_2c(self,adr,rf=1):
+    def read_word_2c(self, adr, rf = 1):
         val = self.read_word(adr,rf)
         if(val & (1 << 16 - 1)):
-            return val - (1<<16)
+            return val - (1 << 16)
         else:
             return val
 
@@ -55,6 +58,7 @@ class ADXL345(IMU):
     
     def __init__(self) :
         #Class Properties
+        super().__init__()
         self.Xoffset = 0.0
         self.Yoffset = 0.0
         self.Zoffset = 0.0
