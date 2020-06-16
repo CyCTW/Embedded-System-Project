@@ -17,21 +17,21 @@ def main():
         while True:
             aX, aaX, aaZ = sensor.getaX(), sensor.getaaX(), sensor.getaaZ()
             msg = b'No'
-            if aX < -4:
+            if aaX < -100:
+                msg = b'U'
+            elif aaX > 40:
+                msg = b'D'
+            elif aaZ < -200:
+                msg = b'L+S'
+            elif aaZ > 200:
+                msg = b'R+S'
+            elif aX < -4:
                 msg = b'L'
             elif aX > 4:
                 msg = b'R'
-            elif aaZ < -200:
-                msg = b'LS'
-            elif aaZ > 200:
-                msg = b'RS'
-            elif aaX < -150:
-                msg = b'U'
-            elif aaX > 150:
-                msg = b'D'
             client.send(msg)
-            data = client.recv(1024)
-            time.sleep(0.02)
+            data = client.recv(32)
+            time.sleep(0.05)
                     
     except KeyboardInterrupt:
         print("Cleanup")
