@@ -17,24 +17,24 @@ def main():
         delay = 0.02
         while True:
             aX, aY, aaZ = sensor.getaX(), sensor.getaY(), sensor.getaaZ()
-            if aY > 6:
+            if aY > 4:
                 client.send(b'U')
                 time.sleep(delay)
             elif aY < -2:
                 client.send(b'D')
                 time.sleep(delay)
 
-            if aX < -3:
+            if aX < -5:
                 client.send(b'L')
                 time.sleep(delay)
-            elif aX > 3:
+            elif aX > 5:
                 client.send(b'R')
                 time.sleep(delay)
 
-            if aaZ < -150:
+            if aaZ < -200:
                 client.send(b'L+S')
                 time.sleep(delay)
-            elif aaZ > 150:
+            elif aaZ > 200:
                 client.send(b'R+S')
                 time.sleep(delay)
                     
