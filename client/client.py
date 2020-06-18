@@ -31,10 +31,10 @@ def main():
                 client.send(b'R')
                 time.sleep(delay)
 
-            if aaZ < -200:
+            if aaZ < -150:
                 client.send(b'L+S')
                 time.sleep(delay)
-            elif aaZ > 200:
+            elif aaZ > 150:
                 client.send(b'R+S')
                 time.sleep(delay)
                     
