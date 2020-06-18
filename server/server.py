@@ -131,13 +131,19 @@ def Mouse_act(cmd):
 		ptg.move(-30, 0)	
 	elif cmd == "R":
 		ptg.move(30, 0)
-	elif cmd == "u":
-		ptg.move(0, 30)
-	elif cmd == "d":
-		ptg.move(0, -30)
 	elif cmd == "U":
+		ptg.move(0, 30)
+	elif cmd == "D":
+		ptg.move(0, -30)
+	elif cmd == "C":
 		ptg.click()
 	
+	return "command send: {}".format(cmd)
+def Dino_act(cmd):
+	if cmd == "U":
+		keyboard.press("space")
+		time.sleep(0.03)
+		keyboard.release("space")
 	return "command send: {}".format(cmd)
 
 def handle(client, addr, numb):
@@ -157,6 +163,8 @@ def handle(client, addr, numb):
 				res = Down_act(text, numb)
 			elif game == "Mouse":
 				res = Mouse_act(text)
+			elif game == "Dino":
+				res = Dino_act(text)
 			else:
 				pass
 			client.send(res.encode())
