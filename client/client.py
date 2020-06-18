@@ -14,20 +14,20 @@ def main():
         client = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
         client.connect((args.ip, int(args.port)))
 
-        delay = 0.03
+        delay = 0.02
         while True:
-            aX, aY, aaX, aaZ = sensor.getaX(), sensor.getaY(), sensor.getaaX(), sensor.getaaZ()
-            if aY > 5:
+            aX, aY, aaZ = sensor.getaX(), sensor.getaY(), sensor.getaaZ()
+            if aY > 6:
                 client.send(b'U')
                 time.sleep(delay)
             elif aY < -2:
                 client.send(b'D')
                 time.sleep(delay)
 
-            if aX < -4:
+            if aX < -3:
                 client.send(b'L')
                 time.sleep(delay)
-            elif aX > 4:
+            elif aX > 3:
                 client.send(b'R')
                 time.sleep(delay)
 
