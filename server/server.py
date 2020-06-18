@@ -4,6 +4,7 @@ import os
 import threading
 import time
 import keyboard
+import pyautogui as ptg
 
 parser = argparse.ArgumentParser()
 parser.add_argument("HOST")
@@ -125,10 +126,24 @@ def Down_act(cmd, numb):
 	print( "{} command send: {}".format("player" + str(numb), ply_cmd) )
 	return "{} command send: {}".format("player" + str(numb), ply_cmd)
 
-
+def Mouse_act(cmd):
+	if cmd == "L":
+		ptg.move(-30, 0)	
+	elif cmd == "R":
+		ptg.move(30, 0)
+	elif cmd == "u":
+		ptg.move(0, 30)
+	elif cmd == "d":
+		ptg.move(0, -30)
+	elif cmd == "U":
+		ptg.click()
 	
+	return "command send: {}".format(cmd)
+
 def handle(client, addr, numb):
-	client.send("You are player" + str(numb))
+	st = "You are player" + str(numb)
+	st = st.encode()
+	client.send(st)
 	while True:
 		try:
 			
@@ -140,9 +155,11 @@ def handle(client, addr, numb):
 				res = Pika_act(text, numb)
 			elif game == "Down":
 				res = Down_act(text, numb)
+			elif game == "Mouse":
+				res = Mouse_act(text)
 			else:
 				pass
-			client.send(res)
+			client.send(res.encode())
 
 			# client input "quit"
 			if text == 'quit\r\n' or not text:
