@@ -14,29 +14,35 @@ def main():
         client = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
         client.connect((args.ip, int(args.port)))
 
-        delay = 0.02
+        delay = 0.01
         while True:
-            aX, aY, aaZ = sensor.getaX(), sensor.getaY(), sensor.getaaZ()
-            if aY > 4:
+
+            aaZ = sensor.getaaZ()
+            if aaZ < -130:
+                client.send(b'L+S')
+                time.sleep(delay)
+                continue
+            elif aaZ > 130:
+                client.send(b'R+S')
+                time.sleep(delay)
+                continue
+
+            aY = sensor.getaY()
+            if aY > 5:
                 client.send(b'U')
                 time.sleep(delay)
             elif aY < -2:
                 client.send(b'D')
                 time.sleep(delay)
 
-            if aX < -5:
+            aX = sensor.getaX()
+            if aX < -4:
                 client.send(b'L')
                 time.sleep(delay)
-            elif aX > 5:
+            elif aX > 4:
                 client.send(b'R')
                 time.sleep(delay)
 
-            if aaZ < -150:
-                client.send(b'L+S')
-                time.sleep(delay)
-            elif aaZ > 150:
-                client.send(b'R+S')
-                time.sleep(delay)
                     
     except KeyboardInterrupt:
         print("Cleanup")
